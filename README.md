@@ -142,7 +142,7 @@
 
 ### 4.3 采集ALSA音频设备
 
-采集v4l2摄像头是`05_alsa_rtsp_server.cpp`这个example，默认不会编译，这个示例相关的代码需要依赖alsa-lib和libfaac来编译，下面介绍使用步骤
+采集alsa音频设备是`05_alsa_rtsp_server.cpp`这个example，默认不会编译，这个示例相关的代码需要依赖alsa-lib和libfaac来编译，下面介绍使用步骤
 
 - 编译安装alsa-lib和libfacc
 
