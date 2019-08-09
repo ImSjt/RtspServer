@@ -15,6 +15,12 @@
 
 int main(int argc, char* argv[])
 {
+    if(argc !=  2)
+    {
+        std::cout<<"Usage: "<<argv[0]<<" <v4l2 dev>"<<std::endl;
+        return -1;
+    }
+
     //Logger::setLogFile();
     Logger::setLogLevel(Logger::LogWarning);
 
@@ -25,7 +31,7 @@ int main(int argc, char* argv[])
     Ipv4Address ipAddr("0.0.0.0", 8554);
     RtspServer* server = RtspServer::createNew(env, ipAddr);
     MediaSession* session = MediaSession::createNew("live");
-    MediaSource* videoSource = V4l2MediaSource::createNew(env, "/dev/video0");
+    MediaSource* videoSource = V4l2MediaSource::createNew(env, argv[1]);
     RtpSink* videoRtpSink = H264RtpSink::createNew(env, videoSource);
 
     session->addRtpSink(MediaSession::TrackId0, videoRtpSink);

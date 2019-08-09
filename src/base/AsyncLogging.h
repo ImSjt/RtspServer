@@ -40,7 +40,7 @@ public:
 private:
     enum
     {
-        BUFFER_SIZE = 4096,
+        BUFFER_SIZE = 1024*1024,
     };
 
     const char* end() const { return mData + BUFFER_SIZE; }

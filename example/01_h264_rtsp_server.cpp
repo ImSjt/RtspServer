@@ -13,6 +13,12 @@
 
 int main(int argc, char* argv[])
 {
+    if(argc !=  2)
+    {
+        std::cout<<"Usage: "<<argv[0]<<" <h264 file>"<<std::endl;
+        return -1;
+    }
+
     //Logger::setLogFile("xxx.log");
     Logger::setLogLevel(Logger::LogWarning);
 
@@ -23,7 +29,7 @@ int main(int argc, char* argv[])
     Ipv4Address ipAddr("0.0.0.0", 8554);
     RtspServer* server = RtspServer::createNew(env, ipAddr);
     MediaSession* session = MediaSession::createNew("live");
-    MediaSource* mediaSource = H264FileMediaSource::createNew(env, "test.h264");
+    MediaSource* mediaSource = H264FileMediaSource::createNew(env, argv[1]);
     RtpSink* rtpSink = H264RtpSink::createNew(env, mediaSource);
 
     session->addRtpSink(MediaSession::TrackId0, rtpSink);

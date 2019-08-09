@@ -13,6 +13,12 @@
 
 int main(int argc, char* argv[])
 {
+    if(argc !=  2)
+    {
+        std::cout<<"Usage: "<<argv[0]<<" <alsa dev>"<<std::endl;
+        return -1;
+    }
+
     //Logger::setLogFile();
     Logger::setLogLevel(Logger::LogWarning);
 
@@ -23,7 +29,7 @@ int main(int argc, char* argv[])
     Ipv4Address ipAddr("0.0.0.0", 8554);
     RtspServer* server = RtspServer::createNew(env, ipAddr);
     MediaSession* session = MediaSession::createNew("live");
-    MediaSource* audioSource = AlsaMediaSource::createNew(env, "hw:0,0"); //默认设备
+    MediaSource* audioSource = AlsaMediaSource::createNew(env, argv[1]); //默认设备"hw:0,0"
     RtpSink* audioRtpSink = AACRtpSink::createNew(env, audioSource);
 
     session->addRtpSink(MediaSession::TrackId0, audioRtpSink);

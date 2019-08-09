@@ -13,6 +13,12 @@
 
 int main(int argc, char* argv[])
 {
+    if(argc !=  2)
+    {
+        std::cout<<"Usage: "<<argv[0]<<" <aac file>"<<std::endl;
+        return -1;
+    }
+
     //Logger::setLogFile();
     Logger::setLogLevel(Logger::LogWarning);
 
@@ -23,7 +29,7 @@ int main(int argc, char* argv[])
     Ipv4Address ipAddr("0.0.0.0", 8554);
     RtspServer* server = RtspServer::createNew(env, ipAddr);
     MediaSession* session = MediaSession::createNew("live");
-    MediaSource* mediaSource = AACFileMeidaSource::createNew(env, "test.aac");
+    MediaSource* mediaSource = AACFileMeidaSource::createNew(env, argv[1]);
     RtpSink* rtpSink = AACRtpSink::createNew(env, mediaSource);
 
     session->addRtpSink(MediaSession::TrackId0, rtpSink);

@@ -15,6 +15,12 @@
 
 int main(int argc, char* argv[])
 {
+    if(argc !=  3)
+    {
+        std::cout<<"Usage: "<<argv[0]<<" <h264 file> <aac file>"<<std::endl;
+        return -1;
+    }
+
     //Logger::setLogFile("xxx.log");
     Logger::setLogLevel(Logger::LogWarning);
 
@@ -25,9 +31,9 @@ int main(int argc, char* argv[])
     Ipv4Address ipAddr("0.0.0.0", 8554);
     RtspServer* server = RtspServer::createNew(env, ipAddr);
     MediaSession* session = MediaSession::createNew("live");
-    MediaSource* videoSource = H264FileMediaSource::createNew(env, "test.h264");
+    MediaSource* videoSource = H264FileMediaSource::createNew(env, argv[1]);
     RtpSink* videoRtpSink = H264RtpSink::createNew(env, videoSource);
-    MediaSource* audioSource = AACFileMeidaSource::createNew(env, "test.aac");
+    MediaSource* audioSource = AACFileMeidaSource::createNew(env, argv[2]);
     RtpSink* audioRtpSink = AACRtpSink::createNew(env, audioSource);
 
     session->addRtpSink(MediaSession::TrackId0, videoRtpSink);
