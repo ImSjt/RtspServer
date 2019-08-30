@@ -56,13 +56,13 @@ std::string MediaSession::generateSDPDescription()
         "v=0\r\n"
         "o=- 9%ld 1 IN IP4 %s\r\n"
         "t=0 0\r\n"
-        "a=control:*\r\n" ,
+        "a=control:*\r\n"
+        "a=type:broadcast\r\n",
         (long)time(NULL), ip.c_str());
 
     if(isStartMulticast())
     {
         snprintf(buf+strlen(buf), sizeof(buf)-strlen(buf),
-                "a=type:broadcast\r\n"
                 "a=rtcp-unicast: reflection\r\n");
     }
 
@@ -82,6 +82,9 @@ std::string MediaSession::generateSDPDescription()
         if(isStartMulticast())
             snprintf(buf+strlen(buf), sizeof(buf)-strlen(buf),
                         "c=IN IP4 %s/255\r\n", getMulticastDestAddr().c_str());
+        else
+            snprintf(buf+strlen(buf), sizeof(buf)-strlen(buf),
+                        "c=IN IP4 0.0.0.0\r\n");
 
         snprintf(buf+strlen(buf), sizeof(buf)-strlen(buf),
                     "%s\r\n", mTracks[i].mRtpSink->getAttribute().c_str());

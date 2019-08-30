@@ -66,7 +66,22 @@ void H264RtpSink::handleFrame(AVFrame* frame)
         /* 发送完整的包 */
         for (i = 0; i < pktNum; i++)
         {
-            rtpHeader->payload[0] = (naluType & 0x60) | 28;
+            /*
+            *     FU Indicator
+            *    0 1 2 3 4 5 6 7
+            *   +-+-+-+-+-+-+-+-+
+            *   |F|NRI|  Type   |
+            *   +---------------+
+            * */
+            rtpHeader->payload[0] = (naluType & 0x60) | 28; //(naluType & 0x60)表示nalu的重要性，28表示为分片
+            
+            /*
+            *      FU Header
+            *    0 1 2 3 4 5 6 7
+            *   +-+-+-+-+-+-+-+-+
+            *   |S|E|R|  Type   |
+            *   +---------------+
+            * */
             rtpHeader->payload[1] = naluType & 0x1F;
             
             if (i == 0) //第一包数据
