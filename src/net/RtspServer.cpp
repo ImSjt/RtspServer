@@ -3,13 +3,15 @@
 #include <stdio.h>
 
 #include "net/RtspServer.h"
+#include "base/New.h"
 
 RtspServer* RtspServer::createNew(UsageEnvironment* env, Ipv4Address& addr)
 {
-    return new RtspServer(env, addr);
+    //return new RtspServer(env, addr);
+    return New<RtspServer>::allocate(env, addr);
 }
 
-RtspServer::RtspServer(UsageEnvironment* env, Ipv4Address& addr) :
+RtspServer::RtspServer(UsageEnvironment* env, const Ipv4Address& addr) :
     TcpServer(env, addr)
 {
     mTriggerEvent = TriggerEvent::createNew(this);
@@ -20,8 +22,11 @@ RtspServer::RtspServer(UsageEnvironment* env, Ipv4Address& addr) :
 
 RtspServer::~RtspServer()
 {
-    delete mTriggerEvent;
-    delete mMutex;
+    //delete mTriggerEvent;
+    //delete mMutex;
+
+    Delete::release(mTriggerEvent);
+    Delete::release(mMutex);
 }
 
 void RtspServer::handleNewConnection(int connfd)
@@ -88,7 +93,8 @@ void RtspServer::handleDisconnectionList()
         int sockfd = *it;
         std::map<int, RtspConnection*>::iterator _it = mConnections.find(sockfd);
         assert(_it != mConnections.end());
-        delete _it->second;
+        //delete _it->second;
+        Delete::release(_it->second);
         mConnections.erase(sockfd);
     }
 

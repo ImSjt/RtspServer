@@ -19,6 +19,8 @@ public:
     };
 
     static MediaSession* createNew(std::string sessionName);
+
+    MediaSession(const std::string& sessionName);
     ~MediaSession();
 
     std::string name() const { return mSessionName; }
@@ -41,7 +43,6 @@ private:
         std::list<RtpInstance*> mRtpInstances;
     };
 
-    MediaSession(std::string& sessionName);
     Track* getTrack(MediaSession::TrackId trackId);
     static void sendPacketCallback(void* arg1, void* arg2, RtpPacket* rtpPacket);
     void sendPacket(MediaSession::Track* tarck, RtpPacket* rtpPacket);

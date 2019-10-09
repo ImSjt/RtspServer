@@ -10,7 +10,9 @@ class Acceptor
 public:
     typedef void(*NewConnectionCallback)(void* data, int connfd);
 
-    static Acceptor* createNew(UsageEnvironment* env, Ipv4Address& addr);
+    static Acceptor* createNew(UsageEnvironment* env, const Ipv4Address& addr);
+
+    Acceptor(UsageEnvironment* env, const Ipv4Address& addr);
     ~Acceptor();
 
     bool listenning() const { return mListenning; }
@@ -18,7 +20,6 @@ public:
     void setNewConnectionCallback(NewConnectionCallback cb, void* arg);
 
 private:
-    Acceptor(UsageEnvironment* env, Ipv4Address& addr);
     static void readCallback(void*);
     void handleRead();
 

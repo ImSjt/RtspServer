@@ -8,15 +8,14 @@ class Condition
 {
 public:
     static Condition* createNew();    
+    
+    Condition();
     ~Condition();
 
     void wait(Mutex* mutex);
     bool waitTimeout(Mutex* mutex, int ms);
     void signal();
     void broadcast();
-
-private:
-    Condition();
 
 private:
     pthread_cond_t mCond;

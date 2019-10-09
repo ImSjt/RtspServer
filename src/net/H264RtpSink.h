@@ -8,14 +8,13 @@ class H264RtpSink : public RtpSink
 {
 public:
     static H264RtpSink* createNew(UsageEnvironment* env, MediaSource* mediaSource);
+    
+    H264RtpSink(UsageEnvironment* env, MediaSource* mediaSource);
     virtual ~H264RtpSink();
 
     virtual std::string getMediaDescription(uint16_t port);
     virtual std::string getAttribute();
     virtual void handleFrame(AVFrame* frame);
-
-protected:
-    H264RtpSink(UsageEnvironment* env, MediaSource* mediaSource);
 
 private:
     RtpPacket mRtpPacket;

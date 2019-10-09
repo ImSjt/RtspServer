@@ -19,13 +19,14 @@ public:
     };
 
     static RtspConnection* createNew(RtspServer* rtspServer, int sockfd);
+    
+    RtspConnection(RtspServer* rtspServer, int sockfd);
     ~RtspConnection();
 
 protected:
     virtual void handleReadBytes();
 
 private:
-    RtspConnection(RtspServer* rtspServer, int sockfd);
     bool parseRequest();
     bool parseRequest1(const char* begin, const char* end);
     bool parseRequest2(const char* begin, const char* end);

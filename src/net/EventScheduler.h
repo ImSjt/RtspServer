@@ -16,6 +16,8 @@ public:
     };
 
     static EventScheduler* createNew(PollerType type);
+
+    EventScheduler(PollerType type, int fd);
     virtual ~EventScheduler();
 
     bool addTriggerEvent(TriggerEvent* event);
@@ -31,7 +33,6 @@ public:
     void wakeup();
 
 private:
-    EventScheduler(PollerType type, int fd);
     void handleTriggerEvents();
     static void handleReadCallback(void*);
     void handleRead();

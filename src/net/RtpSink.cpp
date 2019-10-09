@@ -2,6 +2,7 @@
 
 #include "net/RtpSink.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 RtpSink::RtpSink(UsageEnvironment* env, MediaSource* mediaSource, int payloadType) :
     mMediaSource(mediaSource),
@@ -27,7 +28,8 @@ RtpSink::RtpSink(UsageEnvironment* env, MediaSource* mediaSource, int payloadTyp
 RtpSink::~RtpSink()
 {
     mEnv->scheduler()->removeTimedEvent(mTimerId);
-    delete mTimerEvent;
+    //delete mTimerEvent;
+    Delete::release(mTimerEvent);
 }
 
 void RtpSink::setSendFrameCallback(SendPacketCallback cb, void* arg1, void* arg2)

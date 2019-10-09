@@ -7,13 +7,12 @@ class UsageEnvironment
 {
 public:
     static UsageEnvironment* createNew(EventScheduler* scheduler, ThreadPool* threadPool);
+    
+    UsageEnvironment(EventScheduler* scheduler, ThreadPool* threadPool);
     ~UsageEnvironment();
 
     EventScheduler* scheduler();
     ThreadPool* threadPool();
-
-private:
-    UsageEnvironment(EventScheduler* scheduler, ThreadPool* threadPool);
 
 private:
     EventScheduler* mScheduler;

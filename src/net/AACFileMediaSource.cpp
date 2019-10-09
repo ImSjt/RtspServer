@@ -7,13 +7,15 @@
 
 #include "net/AACFileMediaSource.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 AACFileMeidaSource* AACFileMeidaSource::createNew(UsageEnvironment* env, std::string file)
 {
-    return new AACFileMeidaSource(env, file);
+    //return new AACFileMeidaSource(env, file);
+    return New<AACFileMeidaSource>::allocate(env, file);
 }
 
-AACFileMeidaSource::AACFileMeidaSource(UsageEnvironment* env, std::string& file) :
+AACFileMeidaSource::AACFileMeidaSource(UsageEnvironment* env, const std::string& file) :
     MediaSource(env),
     mFile(file)
 {

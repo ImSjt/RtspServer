@@ -3,12 +3,14 @@
 
 #include "net/poller/PollPoller.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static const int pollTimeout = 10000;
 
 PollPoller* PollPoller::createNew()
 {
-    return new PollPoller();
+    //return new PollPoller();
+    return New<PollPoller>::allocate();
 }
 
 PollPoller::PollPoller()

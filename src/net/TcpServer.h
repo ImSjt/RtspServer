@@ -17,7 +17,7 @@ public:
     void start();
 
 protected:
-    TcpServer(UsageEnvironment* env, Ipv4Address& addr);
+    TcpServer(UsageEnvironment* env, const Ipv4Address& addr);
     virtual void handleNewConnection(int connfd) = 0;
     //virtual void handleDisconnection(int sockfd);
 

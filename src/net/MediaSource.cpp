@@ -1,5 +1,6 @@
 #include "net/MediaSource.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 MediaSource::MediaSource(UsageEnvironment* env) :
     mEnv(env)
@@ -13,7 +14,8 @@ MediaSource::MediaSource(UsageEnvironment* env) :
 
 MediaSource::~MediaSource()
 {
-    delete mMutex;
+    //delete mMutex;
+    Delete::release(mMutex);
 }
 
 AVFrame* MediaSource::getFrame()

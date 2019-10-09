@@ -10,12 +10,12 @@ class TcpConnection
 public:
     typedef void (*DisconnectionCallback)(void*, int);
 
+    TcpConnection(UsageEnvironment* env, int sockfd);
     virtual ~TcpConnection();
 
     void setDisconnectionCallback(DisconnectionCallback cb, void* arg);
 
 protected:
-    TcpConnection(UsageEnvironment* env, int sockfd);
     void enableReadHandling();
     void enableWriteHandling();
     void enableErrorHandling();

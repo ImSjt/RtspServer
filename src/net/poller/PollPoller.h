@@ -10,15 +10,14 @@ class PollPoller : public Poller
 {
 public:
     static PollPoller* createNew();
+
+    PollPoller();
     virtual ~PollPoller();
 
     virtual bool addIOEvent(IOEvent* event);
     virtual bool updateIOEvent(IOEvent* event);
     virtual bool removeIOEvent(IOEvent* event);
     virtual void handleEvent();
-
-private:
-    PollPoller();
 
 private:
     typedef std::vector<struct pollfd> PollFdList;

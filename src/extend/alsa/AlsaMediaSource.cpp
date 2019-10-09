@@ -2,13 +2,15 @@
 
 #include "extend/alsa/AlsaMediaSource.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 AlsaMediaSource* AlsaMediaSource::createNew(UsageEnvironment* env, std::string dev)
 {
-    return new AlsaMediaSource(env, dev);
+    //return new AlsaMediaSource(env, dev);
+    return New<AlsaMediaSource>::allocate(env, dev);
 }
 
-AlsaMediaSource::AlsaMediaSource(UsageEnvironment* env, std::string& dev) :
+AlsaMediaSource::AlsaMediaSource(UsageEnvironment* env, const std::string& dev) :
     MediaSource(env),
     mEnv(env),
     mDev(dev),

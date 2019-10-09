@@ -6,16 +6,18 @@
 
 #include "net/H264FileMediaSource.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static inline int startCode3(uint8_t* buf);
 static inline int startCode4(uint8_t* buf);
 
 H264FileMediaSource* H264FileMediaSource::createNew(UsageEnvironment* env, std::string file)
 {
-    return new H264FileMediaSource(env, file);
+    //return new H264FileMediaSource(env, file);
+    return New<H264FileMediaSource>::allocate(env, file);
 }
 
-H264FileMediaSource::H264FileMediaSource(UsageEnvironment* env, std::string& file) :
+H264FileMediaSource::H264FileMediaSource(UsageEnvironment* env, const std::string& file) :
     MediaSource(env),
     mFile(file)
 {

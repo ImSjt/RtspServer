@@ -4,13 +4,15 @@
 
 #include "net/poller/EPollPoller.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static const int InitEventListSize = 16;
 static const int epollTimeout = 10000;
 
 EPollPoller* EPollPoller::createNew()
 {
-    return new EPollPoller();
+    //return new EPollPoller();
+    return New<EPollPoller>::allocate();
 }
 
 EPollPoller::EPollPoller() :

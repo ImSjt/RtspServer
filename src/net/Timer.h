@@ -33,6 +33,8 @@ class TimerManager
 {
 public:
     static TimerManager* createNew(Poller* poller);
+
+    TimerManager(int timerFd, Poller* poller);
     ~TimerManager();
 
     Timer::TimerId addTimer(TimerEvent* event, Timer::Timestamp timestamp,
@@ -40,7 +42,6 @@ public:
     bool removeTimer(Timer::TimerId timerId);
 
 private:
-    TimerManager(int timerFd, Poller* poller);
     void modifyTimeout();
     static void handleRead(void*);
     void handleTimerEvent();

@@ -1,6 +1,7 @@
 #include "net/TcpConnection.h"
 #include "net/SocketsOps.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -22,7 +23,8 @@ TcpConnection::TcpConnection(UsageEnvironment* env, int sockfd) :
 TcpConnection::~TcpConnection()
 {
     mEnv->scheduler()->removeIOEvent(mTcpConnIOEvent);
-    delete mTcpConnIOEvent;
+    //delete mTcpConnIOEvent;
+    Delete::release(mTcpConnIOEvent);
 }
 
 void TcpConnection::setDisconnectionCallback(DisconnectionCallback cb, void* arg)

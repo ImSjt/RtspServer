@@ -35,6 +35,8 @@ public:
     };
 
     static ThreadPool* createNew(int num);
+    
+    ThreadPool(int num);
     ~ThreadPool();
 
     void addTask(Task& task);
@@ -46,7 +48,6 @@ private:
         virtual void run(void *arg);
     };
 
-    ThreadPool(int num);
     void createThreads();
     void cancelThreads();
     void handleTask();

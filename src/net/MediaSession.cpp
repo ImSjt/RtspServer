@@ -7,13 +7,15 @@
 #include "net/MediaSession.h"
 #include "net/SocketsOps.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 MediaSession* MediaSession::createNew(std::string sessionName)
 {
-    return new MediaSession(sessionName);
+    //return new MediaSession(sessionName);
+    return New<MediaSession>::allocate(sessionName);
 }
 
-MediaSession::MediaSession(std::string& sessionName) :
+MediaSession::MediaSession(const std::string& sessionName) :
     mSessionName(sessionName),
     mIsStartMulticast(false)
 {
@@ -36,11 +38,13 @@ MediaSession::~MediaSession()
         if(mMulticastRtpInstances[i])
         {
             this->removeRtpInstance(mMulticastRtpInstances[i]);
-            delete mMulticastRtpInstances[i];
+            //delete mMulticastRtpInstances[i];
+            Delete::release(mMulticastRtpInstances[i]);
         }
 
         if(mMulticastRtcpInstances[i])
-            delete mMulticastRtcpInstances[i];
+            Delete::release(mMulticastRtcpInstances[i]);
+            //delete mMulticastRtcpInstances[i];
     }
 }
 

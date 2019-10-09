@@ -37,6 +37,7 @@
         "ctime": "cpp",
         "ratio": "cpp",
         "atomic": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "cstdarg": "cpp"
     }
 }

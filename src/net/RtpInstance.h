@@ -7,6 +7,7 @@
 #include "net/InetAddress.h"
 #include "net/SocketsOps.h"
 #include "net/Rtp.h"
+#include "base/New.h"
 
 class RtpInstance
 {
@@ -20,12 +21,14 @@ public:
     static RtpInstance* createNewOverUdp(int localSockfd, uint16_t localPort,
                                     std::string destIp, uint16_t destPort)
     {
-        return new RtpInstance(localSockfd, localPort, destIp, destPort);
+        //return new RtpInstance(localSockfd, localPort, destIp, destPort);
+        return New<RtpInstance>::allocate(localSockfd, localPort, destIp, destPort);
     }
 
     static RtpInstance* createNewOverTcp(int clientSockfd, uint8_t rtpChannel)
     {
-        return new RtpInstance(clientSockfd, rtpChannel);
+        //return new RtpInstance(clientSockfd, rtpChannel);
+        return New<RtpInstance>::allocate(clientSockfd, rtpChannel);
     }
 
     ~RtpInstance()
@@ -69,8 +72,8 @@ private:
         return sockets::write(mSockfd, buf, size);
     }
 
-private:
-    RtpInstance(int localSockfd, uint16_t localPort, std::string& destIp, uint16_t destPort) :
+public:
+    RtpInstance(int localSockfd, uint16_t localPort, const std::string& destIp, uint16_t destPort) :
         mRtpType(RTP_OVER_UDP), mSockfd(localSockfd), mLocalPort(localPort),
         mDestAddr(destIp, destPort), mIsAlive(false), mSessionId(0)
     {
@@ -100,7 +103,8 @@ public:
     static RtcpInstance* createNew(int localSockfd, uint16_t localPort,
                                     std::string destIp, uint16_t destPort)
     {
-        return new RtcpInstance(localSockfd, localPort, destIp, destPort);
+        //return new RtcpInstance(localSockfd, localPort, destIp, destPort);
+        return New<RtcpInstance>::allocate(localSockfd, localPort, destIp, destPort);
     }
 
     ~RtcpInstance()
@@ -125,7 +129,7 @@ public:
     void setSessionId(uint16_t sessionId) { mSessionId = sessionId; }
     uint16_t sessionId() const { return mSessionId; }
 
-private:
+public:
     RtcpInstance(int localSockfd, uint16_t localPort,
                     std::string destIp, uint16_t destPort) :
         mLocalSockfd(localSockfd), mLocalPort(localPort), mDestAddr(destIp, destPort),

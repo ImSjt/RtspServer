@@ -7,6 +7,7 @@
 #include "net/poller/PollPoller.h"
 #include "net/poller/EPollPoller.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static int createEventFd()
 {
@@ -29,7 +30,8 @@ EventScheduler* EventScheduler::createNew(PollerType type)
     if (evtFd < 0)
         return NULL;
 
-    return new EventScheduler(type, evtFd);
+    //return new EventScheduler(type, evtFd);
+    return New<EventScheduler>::allocate(type, evtFd);
 }
 
 EventScheduler::EventScheduler(PollerType type, int fd) :
@@ -67,9 +69,13 @@ EventScheduler::~EventScheduler()
 {
     mPoller->removeIOEvent(mWakeIOEvent);
     ::close(mWakeupFd);
-    delete mWakeIOEvent;
-    delete mTimerManager;
-    delete mPoller;
+
+    //delete mWakeIOEvent;
+    //delete mTimerManager;
+    //delete mPoller;
+    Delete::release(mWakeIOEvent);
+    Delete::release(mTimerManager);
+    Delete::release(mPoller);
 }
 
 bool EventScheduler::addTriggerEvent(TriggerEvent* event)

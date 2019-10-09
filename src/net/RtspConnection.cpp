@@ -7,6 +7,7 @@
 #include "net/RtspConnection.h"
 #include "net/MediaSession.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static void getPeerIp(int sockfd, std::string& ip)
 {
@@ -18,7 +19,8 @@ static void getPeerIp(int sockfd, std::string& ip)
 
 RtspConnection* RtspConnection::createNew(RtspServer* rtspServer, int sockfd)
 {
-    return new RtspConnection(rtspServer, sockfd);
+    //return new RtspConnection(rtspServer, sockfd);
+    return New<RtspConnection>::allocate(rtspServer, sockfd);
 }
 
 RtspConnection::RtspConnection(RtspServer* rtspServer, int sockfd) :
@@ -46,12 +48,14 @@ RtspConnection::~RtspConnection()
         {
             if(mSession)
                 mSession->removeRtpInstance(mRtpInstances[i]);
-            delete mRtpInstances[i];
+            //delete mRtpInstances[i];
+            Delete::release(mRtpInstances[i]);
         }
 
         if(mRtcpInstances[i])
         {
-            delete mRtcpInstances[i];
+            //delete mRtcpInstances[i];
+            Delete::release(mRtcpInstances[i]);
         }
     }
 }

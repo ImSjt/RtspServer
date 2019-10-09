@@ -12,10 +12,11 @@ class AlsaMediaSource : public MediaSource
 {
 public:
     static AlsaMediaSource* createNew(UsageEnvironment* env, std::string dev);
+    
+    AlsaMediaSource(UsageEnvironment* env, const std::string& dev);
     virtual ~AlsaMediaSource();
 
 protected:
-    AlsaMediaSource(UsageEnvironment* env, std::string& dev);
     virtual void readFrame();
 
 private:

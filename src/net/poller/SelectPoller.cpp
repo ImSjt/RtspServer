@@ -1,11 +1,13 @@
 #include "net/poller/SelectPoller.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 static const int selectTimeout = 10000;
 
 SelectPoller* SelectPoller::createNew()
 {
-    return new SelectPoller();
+    //return new SelectPoller();
+    return New<SelectPoller>::allocate();
 }
 
 SelectPoller::SelectPoller()

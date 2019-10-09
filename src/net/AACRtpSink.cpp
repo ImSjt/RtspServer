@@ -4,10 +4,12 @@
 
 #include "net/AACRtpSink.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 AACRtpSink* AACRtpSink::createNew(UsageEnvironment* env, MediaSource* mediaSource)
 {
-    return new AACRtpSink(env, mediaSource, RTP_PAYLOAD_TYPE_AAC);
+    //return new AACRtpSink(env, mediaSource, RTP_PAYLOAD_TYPE_AAC);
+    return New<AACRtpSink>::allocate(env, mediaSource, RTP_PAYLOAD_TYPE_AAC);
 }
 
 AACRtpSink::AACRtpSink(UsageEnvironment* env, MediaSource* mediaSource, int payloadType) :

@@ -6,15 +6,14 @@ class Mutex
 {
 public:
     static Mutex* createNew();
+    
+    Mutex();
     ~Mutex();
 
     void lock();
     void unlock();
     
     pthread_mutex_t* get() { return &mMutex; };
-
-private:
-    Mutex();
 
 private:
     pthread_mutex_t mMutex;

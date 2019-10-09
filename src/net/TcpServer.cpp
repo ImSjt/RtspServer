@@ -2,8 +2,9 @@
 
 #include "net/TcpServer.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
-TcpServer::TcpServer(UsageEnvironment* env, Ipv4Address& addr) :
+TcpServer::TcpServer(UsageEnvironment* env, const Ipv4Address& addr) :
     mEnv(env),
     mAddr(addr)
 {
@@ -14,7 +15,8 @@ TcpServer::TcpServer(UsageEnvironment* env, Ipv4Address& addr) :
 
 TcpServer::~TcpServer()
 {
-    delete mAcceptor;
+    //delete mAcceptor;
+    Delete::release(mAcceptor);
 }
 
 void TcpServer::start()

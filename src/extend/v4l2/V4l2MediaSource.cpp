@@ -6,14 +6,15 @@
 
 #include "extend/v4l2/V4l2MediaSource.h"
 #include "base/Logging.h"
-
+#include "base/New.h"
 
 V4l2MediaSource* V4l2MediaSource::createNew(UsageEnvironment* env, std::string dev)
 {
-    return new V4l2MediaSource(env, dev);
+    //return new V4l2MediaSource(env, dev);
+    return New<V4l2MediaSource>::allocate(env, dev);
 }
 
-V4l2MediaSource::V4l2MediaSource(UsageEnvironment* env, std::string& dev) :
+V4l2MediaSource::V4l2MediaSource(UsageEnvironment* env, const std::string& dev) :
     MediaSource(env),
     mEnv(env),
     mDev(dev),
@@ -212,9 +213,14 @@ bool V4l2MediaSource::x264Init()
 {
 	mNals = NULL;
 	mX264Handle = NULL;
-	mPicIn = new x264_picture_t;
-	mPicOut = new x264_picture_t;
-	mParam = new x264_param_t;
+	//mPicIn = new x264_picture_t;
+	//mPicOut = new x264_picture_t;
+	//mParam = new x264_param_t;
+    
+    mPicIn = New<x264_picture_t>::allocate();
+	mPicOut = New<x264_picture_t>::allocate();
+	mParam = New<x264_param_t>::allocate();
+    
     mCsp = X264_CSP_YUYV;
 
     x264_param_default(mParam);
@@ -242,9 +248,12 @@ bool V4l2MediaSource::x264Exit()
     x264_picture_clean(mPicIn);
     x264_encoder_close(mX264Handle);
 
-    delete mPicIn;
-    delete mPicOut;
-    delete mParam;
+    //delete mPicIn;
+    //delete mPicOut;
+    //delete mParam;
+    Delete::release(mPicIn);
+    Delete::release(mPicOut);
+    Delete::release(mParam);
 
     return true;
 }

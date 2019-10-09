@@ -10,14 +10,13 @@ class TriggerEvent
 public:
     static TriggerEvent* createNew(void* arg);
     static TriggerEvent* createNew();
+
+    TriggerEvent(void* arg);
     ~TriggerEvent() {  };
 
     void setArg(void* arg) { mArg = arg; }
     void setTriggerCallback(EventCallback cb) { mTriggerCallback = cb; }
     void handleEvent();
-
-private:
-    TriggerEvent(void* arg);
 
 private:
     void* mArg;
@@ -30,14 +29,12 @@ public:
     static TimerEvent* createNew(void* arg);
     static TimerEvent* createNew();
 
+    TimerEvent(void* arg);
     ~TimerEvent() { }
 
     void setArg(void* arg) { mArg = arg; }
     void setTimeoutCallback(EventCallback cb) { mTimeoutCallback = cb; }
     void handleEvent();
-
-private:
-    TimerEvent(void* arg);
 
 private:
     void* mArg;
@@ -58,6 +55,7 @@ public:
     static IOEvent* createNew(int fd, void* arg);
     static IOEvent* createNew(int fd);
 
+    IOEvent(int fd, void* arg);
     ~IOEvent() { }
 
     int getFd() const { return mFd; }
@@ -82,9 +80,6 @@ public:
     bool isErrorHandling() const { return (mEvent & EVENT_ERROR) != 0; };
 
     void handleEvent();
-
-private:
-    IOEvent(int fd, void* arg);
 
 private:
     int mFd;

@@ -1,13 +1,15 @@
 #include <stdio.h>
 
 #include "net/UsageEnvironment.h"
+#include "base/New.h"
 
 UsageEnvironment* UsageEnvironment::createNew(EventScheduler* scheduler, ThreadPool* threadPool)
 {
     if(!scheduler)
         return NULL;
     
-    return new UsageEnvironment(scheduler, threadPool);
+    //return new UsageEnvironment(scheduler, threadPool);
+    return New<UsageEnvironment>::allocate(scheduler, threadPool);
 }
 
 UsageEnvironment::UsageEnvironment(EventScheduler* scheduler, ThreadPool* threadPool) :

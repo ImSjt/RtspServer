@@ -8,6 +8,8 @@ class AACFileMeidaSource : public MediaSource
 {
 public:
     static AACFileMeidaSource* createNew(UsageEnvironment* env, std::string file);
+
+    AACFileMeidaSource(UsageEnvironment* env, const std::string& file);
     virtual ~AACFileMeidaSource();
 
 protected:
@@ -41,7 +43,6 @@ private:
         unsigned int numberOfRawDataBlockInFrame; //2 bit
     };
 
-    AACFileMeidaSource(UsageEnvironment* env, std::string& file);
     bool parseAdtsHeader(uint8_t* in, struct AdtsHeader* res);
     int getFrameFromAACFile(int fd, uint8_t* buf, int size);
 

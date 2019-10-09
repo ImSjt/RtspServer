@@ -1,11 +1,13 @@
 #include <sys/time.h>
 #include <time.h>
 
-#include "Condition.h"
+#include "base/Condition.h"
+#include "base/New.h"
 
 Condition* Condition::createNew()
 {
-    return new Condition();
+    //return new Condition();
+    return New<Condition>::allocate();
 }
 
 Condition::Condition()

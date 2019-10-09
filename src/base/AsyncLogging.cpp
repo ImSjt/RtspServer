@@ -3,6 +3,7 @@
 
 #include "base/AsyncLogging.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 AsyncLogging* AsyncLogging::mAsyncLogging = NULL;
 
@@ -44,14 +45,18 @@ AsyncLogging::~AsyncLogging()
     mRun = false;
     mCond->broadcast();
 
-    delete mMutex;
-    delete mCond;
+    //delete mMutex;
+    //delete mCond;
+    Delete::release(mMutex);
+    Delete::release(mCond);
 }
 
 AsyncLogging* AsyncLogging::instance()
 {
     if(!mAsyncLogging)
+    {
         mAsyncLogging = new AsyncLogging(Logger::getLogFile());
+    }
 
     return mAsyncLogging;
 }

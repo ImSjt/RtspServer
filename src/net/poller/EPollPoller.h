@@ -9,14 +9,14 @@ class EPollPoller : public Poller
 {
 public:
     static EPollPoller* createNew();
-    ~EPollPoller();
+
+    EPollPoller();
+    virtual ~EPollPoller();
+
     virtual bool addIOEvent(IOEvent* event);
     virtual bool updateIOEvent(IOEvent* event);
     virtual bool removeIOEvent(IOEvent* event);
     virtual void handleEvent();
-
-private:
-    EPollPoller();
 
 private:
     int mEPollFd;

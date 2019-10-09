@@ -12,10 +12,11 @@ class V4l2MediaSource : public MediaSource
 {
 public:
     static V4l2MediaSource* createNew(UsageEnvironment* env, std::string dev);
+    
+    V4l2MediaSource(UsageEnvironment* env, const std::string& dev);
     virtual ~V4l2MediaSource();
 
 protected:
-    V4l2MediaSource(UsageEnvironment* env, std::string& dev);
     virtual void readFrame();
 
 private:

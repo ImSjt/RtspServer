@@ -14,6 +14,7 @@ class RtpSink
 public:
     typedef void (*SendPacketCallback)(void* arg1, void* arg2, RtpPacket* mediaPacket);
 
+    RtpSink(UsageEnvironment* env, MediaSource* mediaSource, int payloadType);
     virtual ~RtpSink();
 
     virtual std::string getMediaDescription(uint16_t port) = 0;
@@ -22,7 +23,6 @@ public:
     void setSendFrameCallback(SendPacketCallback cb, void* arg1, void* arg2);
 
 protected:
-    RtpSink(UsageEnvironment* env, MediaSource* mediaSource, int payloadType);
     virtual void handleFrame(AVFrame* frame) = 0;
     void sendRtpPacket(RtpPacket* packet);
     void start(int ms);

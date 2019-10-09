@@ -1,8 +1,10 @@
-#include "Mutex.h"
+#include "base/Mutex.h"
+#include "base/New.h"
 
 Mutex* Mutex::createNew()
 {
-    return new Mutex();
+    //return new Mutex();
+    return New<Mutex>::allocate();
 }
 
 Mutex::Mutex()

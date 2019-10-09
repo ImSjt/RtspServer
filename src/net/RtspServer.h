@@ -17,6 +17,8 @@ class RtspServer : public TcpServer
 {
 public:
     static RtspServer* createNew(UsageEnvironment* env, Ipv4Address& addr);
+
+    RtspServer(UsageEnvironment* env, const Ipv4Address& addr);
     virtual ~RtspServer();
 
     UsageEnvironment* envir() const { return mEnv; }
@@ -25,7 +27,6 @@ public:
     std::string getUrl(MediaSession* session);
 
 protected:
-    RtspServer(UsageEnvironment* env, Ipv4Address& addr);
     virtual void handleNewConnection(int connfd);
     static void disconnectionCallback(void* arg, int sockfd);
     void handleDisconnection(int sockfd);

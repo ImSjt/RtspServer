@@ -3,13 +3,15 @@
 
 #include "net/H264RtpSink.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
 H264RtpSink* H264RtpSink::createNew(UsageEnvironment* env, MediaSource* mediaSource)
 {
     if(!mediaSource)
         return NULL;
 
-    return new H264RtpSink(env, mediaSource);
+    //return new H264RtpSink(env, mediaSource);
+    return New<H264RtpSink>::allocate(env, mediaSource);
 }
 
 H264RtpSink::H264RtpSink(UsageEnvironment* env, MediaSource* mediaSource) :

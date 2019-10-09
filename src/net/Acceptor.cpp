@@ -1,13 +1,15 @@
 #include "net/Acceptor.h"
 #include "net/SocketsOps.h"
 #include "base/Logging.h"
+#include "base/New.h"
 
-Acceptor* Acceptor::createNew(UsageEnvironment* env, Ipv4Address& addr)
+Acceptor* Acceptor::createNew(UsageEnvironment* env, const Ipv4Address& addr)
 {
-    return new Acceptor(env, addr);
+    //return new Acceptor(env, addr);
+    return New<Acceptor>::allocate(env, addr);
 }
 
-Acceptor::Acceptor(UsageEnvironment* env, Ipv4Address& addr) :
+Acceptor::Acceptor(UsageEnvironment* env, const Ipv4Address& addr) :
     mEnv(env),
     mAddr(addr),
     mSocket(sockets::createTcpSock()),
@@ -25,7 +27,8 @@ Acceptor::~Acceptor()
     if(mListenning)
         mEnv->scheduler()->removeIOEvent(mAcceptIOEvent);
 
-    delete mAcceptIOEvent;
+    //delete mAcceptIOEvent;
+    Delete::release(mAcceptIOEvent);
 }
 
 void Acceptor::listen()

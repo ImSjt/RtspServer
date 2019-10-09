@@ -1,8 +1,10 @@
 #include "base/Sem.h"
+#include "base/New.h"
 
 Sem* Sem::createNew(int val)
 {
-    return new Sem(val);
+    //return new Sem(val);
+    return New<Sem>::allocate(val);
 }
 
 Sem::Sem(int val)

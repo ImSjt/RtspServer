@@ -11,15 +11,14 @@ class SelectPoller : public Poller
 {
 public:
     static SelectPoller* createNew();
+
+    SelectPoller();
     virtual ~SelectPoller();
 
     virtual bool addIOEvent(IOEvent* event);
     virtual bool updateIOEvent(IOEvent* event);
     virtual bool removeIOEvent(IOEvent* event);
     virtual void handleEvent();
-
-private:
-    SelectPoller();
 
 private:
     fd_set mReadSet;
