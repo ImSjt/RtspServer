@@ -389,7 +389,7 @@ bool RtspConnection::handleCmdDescribe()
             "\r\n"
             "%s",
             mCSeq,
-            sdp.size(),
+            (unsigned int)sdp.size(),
             sdp.c_str());
 
     if(sendMessage(mBuffer, strlen(mBuffer)) < 0)
