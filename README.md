@@ -20,7 +20,7 @@
 
 ## 四、总体框架
 
-![frame](.\pic\frame.png)
+![在这里插入图片描述](./pic/frame.png)
 
 ## 五、使用方法
 
