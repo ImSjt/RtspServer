@@ -18,11 +18,15 @@
 - 系统：Ubuntu 14.04
 - 编译工具：gcc 4.8.4
 
-## 四、使用方法
+## 四、总体框架
+
+![](.\pic\整体框架.png)
+
+## 五、使用方法
 
 提供示例：传输H.264文件、传输AAC文件、同时传输H.264和AAC文件、采集摄像头数据编码传输、采集声卡数据编码传输
 
-### 4.1 传输音视频文件
+### 5.1 传输音视频文件
 
 - 下载
 
@@ -69,10 +73,10 @@
 
   打开vlc，输入url，点击播放即可看到视频
 
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190809104752224.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70)
+  ![在这里插入图片描述](./pic/url.png)
 
 - 效果
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190809105335501.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70)
+  ![在这里插入图片描述](./pic/show1.png)
 
 - 运行`aac_rtsp_server`
 
@@ -87,7 +91,7 @@
   ```
 
 
-### 4.2 采集V4L2摄像头 
+### 5.2 采集V4L2摄像头 
 
 采集v4l2摄像头是`04_v4l2_rtsp_server.cpp`这个example，默认不会编译，这个示例相关的代码需要依赖x264库来编译，下面介绍使用步骤
 
@@ -136,11 +140,11 @@
 
 - 效果
 
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/2019080911263931.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70)
+  ![在这里插入图片描述](./pic/show2.png)
 
 
 
-### 4.3 采集ALSA音频设备
+### 5.3 采集ALSA音频设备
 
 采集alsa音频设备是`05_alsa_rtsp_server.cpp`这个example，默认不会编译，这个示例相关的代码需要依赖alsa-lib和libfaac来编译，下面介绍使用步骤
 
@@ -188,17 +192,17 @@
 
   输入url即可得到声卡采集到的声音
 
-### 4.4 RTP_OVER_RTSP
+### 5.4 RTP_OVER_RTSP
 
 此项目默认时采用RTP_OVER_UDP，支持RTP_OVER_RTSP，如果需要测试，那么就需要设置vlc
 
 `工具`>>`首选项`>>`输入/编解码器`>>`live555 流传输`>>`RTP over RTSP(TCP)`
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190809114259431.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](./pic/rtp2tcp.png)
 
 然后随便运行一个example，在vlc输入url，此时就是使用RTP_OVER_RTSP
 
-### 4.5 多播
+### 5.5 多播
 
 如果想测试多播，就需要修改example的示例
 
@@ -210,7 +214,7 @@
 
 这段屏蔽打开，然后重新编译运行，即可切换到多播
 
-## 五、技术点
+## 六、技术点
 
 - 服务器模型
 
@@ -232,17 +236,16 @@
 
   音视频的采集与处理使用的生产者与消费者模式，数据采集为生产者，数据处理为消费者。生产者维护着一个循环队列，会往线程池中添加任务填充缓存，消费者有一个定时器，间隔一定时间就会向生产者取数据，并将数据RTP打包再传输
 
-  ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190820103009455.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70)
+  ![在这里插入图片描述](./pic/buffer.png)
 
 - 内存管理
 
   内存管理分为前后端，前端使用类模板，灵活处理各种类型的对象的分配请求还有释放请求。后端主要是管理内存，提供内存的分配和释放。维护16个自由链表，每个链表维护着相同大小的内存块，分别从8、16、24到128。申请内存的时候，如果小于128字节则从相应的自由链表中获取内存块，如果大于128字节，则直接调用 malloc 进行分配。如果自由链表中没有内存块，那么就从缓冲区中申请一大块内存，然后切分成小块，插入到对应的自由链表中。释放内存的时候，如果小于128字节，那么就插入到对应的自由链表中，如果大于128字节，那么直接调用 free 释放内存
 
-  ![å¨è¿éæå¥å¾çæè¿°](https://img-blog.csdnimg.cn/20190921170941914.PNG?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl80MjQ2MjIwMg==,size_16,color_FFFFFF,t_70) 
+  ![](./pic/mem.png) 
 
-## 六、联系方式
+## 七、联系方式
 
 邮箱：1345648755@qq.com
 
-博客：[\_JT\_](https://blog.csdn.net/weixin_42462202) 
-
+博客：[程序员JT](https://blog.csdn.net/weixin_42462202) 
