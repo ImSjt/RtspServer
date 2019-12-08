@@ -20,7 +20,7 @@
 
 ## 四、总体框架
 
-![](.\pic\frame.png)
+![frame](.\pic\frame.png)
 
 ## 五、使用方法
 
