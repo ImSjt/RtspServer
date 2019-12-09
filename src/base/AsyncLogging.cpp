@@ -72,7 +72,14 @@ void AsyncLogging::append(const char* logline, int len)
     {
         mFreeBuffer.pop();
         mFlushBuffer.push(mCurBuffer);
-        assert(!mFreeBuffer.empty());
+
+        /* 如果缓存区已经用完，那么就睡眠等待 */
+        while(mFreeBuffer.empty())
+        {
+            mCond->signal();
+            mCond->wait(mMutex);
+        }
+        
         mCurBuffer = mFreeBuffer.front();
         mCurBuffer->append(logline, len);
         mCond->signal();
@@ -91,6 +98,7 @@ void AsyncLogging::run(void *arg)
 
         if(ret == true) //signal
         {
+            bool empty = mFreeBuffer.empty();
             int bufferSize = mFlushBuffer.size();
             for(int i = 0; i < bufferSize; ++i)
             {
@@ -101,6 +109,9 @@ void AsyncLogging::run(void *arg)
                 mFreeBuffer.push(buffer);
                 fflush(mFp);
             }
+
+            if(empty)
+                mCond->signal();
         }
         else //timeout
         {

@@ -104,6 +104,9 @@ void TcpConnection::handleRead()
         return;
     }
 
+    /* 先取消读 */
+    //this->disableReadeHandling();
+
     handleReadBytes();
 }
 

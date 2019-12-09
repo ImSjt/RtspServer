@@ -63,6 +63,8 @@ EventScheduler::EventScheduler(PollerType type, int fd) :
     mWakeIOEvent->setReadCallback(handleReadCallback);
     mWakeIOEvent->enableReadHandling();
     mPoller->addIOEvent(mWakeIOEvent);
+
+    mMutex = Mutex::createNew();
 }
 
 EventScheduler::~EventScheduler()
@@ -76,6 +78,7 @@ EventScheduler::~EventScheduler()
     Delete::release(mWakeIOEvent);
     Delete::release(mTimerManager);
     Delete::release(mPoller);
+    Delete::release(mMutex);
 }
 
 bool EventScheduler::addTriggerEvent(TriggerEvent* event)
@@ -132,6 +135,7 @@ void EventScheduler::loop()
     {
         this->handleTriggerEvents();
         mPoller->handleEvent();
+        this->handleOtherEvent();
     }
 }
 
@@ -169,4 +173,20 @@ void EventScheduler::handleRead()
 {
     uint64_t one;
     while(::read(mWakeupFd, &one, sizeof(one)) > 0);
+}
+
+void EventScheduler::runInLocalThread(Callback callBack, void* arg)
+{
+    MutexLockGuard mutexLockGuard(mMutex);
+    mCallBackQueue.push(std::make_pair(callBack, arg));
+}
+
+void EventScheduler::handleOtherEvent()
+{
+    MutexLockGuard mutexLockGuard(mMutex);
+    while(!mCallBackQueue.empty())
+    {
+        std::pair<Callback, void*> event = mCallBackQueue.front();
+        event.first(event.second);
+    }
 }
