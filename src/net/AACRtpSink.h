@@ -17,7 +17,7 @@ public:
     virtual std::string getAttribute();
 
 protected:
-    virtual void handleFrame(AVFrame* frame);
+    virtual int handleFrame(AVFrame* frame);
 
 private:
     RtpPacket mRtpPacket;

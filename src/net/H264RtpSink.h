@@ -14,7 +14,7 @@ public:
 
     virtual std::string getMediaDescription(uint16_t port);
     virtual std::string getAttribute();
-    virtual void handleFrame(AVFrame* frame);
+    virtual int handleFrame(AVFrame* frame);
 
 private:
     RtpPacket mRtpPacket;

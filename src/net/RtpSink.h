@@ -23,7 +23,7 @@ public:
     void setSendFrameCallback(SendPacketCallback cb, void* arg1, void* arg2);
 
 protected:
-    virtual void handleFrame(AVFrame* frame) = 0;
+    virtual int handleFrame(AVFrame* frame) = 0;
     void sendRtpPacket(RtpPacket* packet);
     void start(int ms);
     void stop();
