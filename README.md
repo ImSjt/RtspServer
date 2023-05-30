@@ -252,8 +252,3 @@
 
   ![](./pic/mem.png) 
 
-## 联系方式
-
-邮箱：1345648755@qq.com
-
-博客：[程序员JT](https://blog.csdn.net/weixin_42462202) 
