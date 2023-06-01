@@ -44,7 +44,7 @@ std::string H264RtpSink::getAttribute()
     return std::string(buf);
 }
 
-void H264RtpSink::handleFrame(AVFrame* frame)
+int H264RtpSink::handleFrame(AVFrame* frame)
 {
     RtpHeader* rtpHeader = mRtpPacket.mRtpHeadr;
     uint8_t naluType = frame->mFrame[0];
@@ -56,8 +56,8 @@ void H264RtpSink::handleFrame(AVFrame* frame)
         sendRtpPacket(&mRtpPacket);
         mSeq++;
 
-        if ((naluType & 0x1F) == 7 || (naluType & 0x1F) == 8) // 如果是SPS、PPS就不需要加时间戳
-            return;
+        if ((naluType & 0x1F) == 7 || (naluType & 0x1F) == 8 || (naluType & 0x1F) == 6) // 如果是SPS、PPS、SEI就不需要加时间戳
+            return 0;
     }
     else
     {
@@ -115,4 +115,5 @@ void H264RtpSink::handleFrame(AVFrame* frame)
     }
     
     mTimestamp += mClockRate/mFps;
+    return 1;
 }

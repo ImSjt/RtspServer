@@ -52,7 +52,7 @@ void RtpSink::sendRtpPacket(RtpPacket* packet)
     rtpHead->timestamp = htonl(mTimestamp);
     rtpHead->ssrc = htonl(mSSRC);
     packet->mSize += RTP_HEADER_SIZE;
-    
+
     if(mSendPacketCallback)
         mSendPacketCallback(mArg1, mArg2, packet);
 }
@@ -60,15 +60,19 @@ void RtpSink::sendRtpPacket(RtpPacket* packet)
 void RtpSink::timeoutCallback(void* arg)
 {
     RtpSink* rtpSink = (RtpSink*)arg;
-    AVFrame* frame = rtpSink->mMediaSource->getFrame();
-    if(!frame)
-    {
-        return;
-    }
+    int Done = 0;
 
-    rtpSink->handleFrame(frame);
+    do {
+        AVFrame* frame = rtpSink->mMediaSource->getFrame();
+        if(!frame)
+        {
+            return;
+        } 
 
-    rtpSink->mMediaSource->putFrame(frame);
+        Done = rtpSink->handleFrame(frame);
+
+        rtpSink->mMediaSource->putFrame(frame);
+    } while(!Done);
 }
 
 void RtpSink::start(int ms)

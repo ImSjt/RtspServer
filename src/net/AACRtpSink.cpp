@@ -73,7 +73,7 @@ std::string AACRtpSink::getAttribute()
     return std::string(buf);
 }
 
-void AACRtpSink::handleFrame(AVFrame* frame)
+int AACRtpSink::handleFrame(AVFrame* frame)
 {
     RtpHeader* rtpHeader = mRtpPacket.mRtpHeadr;
     int frameSize = frame->mFrameSize-7; //去掉aac头部
@@ -93,5 +93,7 @@ void AACRtpSink::handleFrame(AVFrame* frame)
 
     /* (1000 / mFps) 表示一帧多少毫秒 */
     mTimestamp += mSampleRate * (1000 / mFps) / 1000;
+
+    return 1;
 }
 
